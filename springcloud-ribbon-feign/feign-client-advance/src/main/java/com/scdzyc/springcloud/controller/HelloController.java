@@ -4,6 +4,7 @@ import com.scdzyc.springcloud.pojo.ServerInfo;
 import com.scdzyc.springcloud.service.IHelloService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -28,5 +29,21 @@ public class HelloController implements IHelloService {
         serverInfo.setPort(port);
         serverInfo.setName(name);
         return serverInfo;
+    }
+
+    public String error() {
+        throw new RuntimeException("is bad way");
+    }
+
+    public String retry(@RequestParam(name = "timeout")int timeout) {
+        try{
+            while (timeout-- > 0){
+                Thread.sleep(1000);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        log.info("retry is :" + port);
+        return port;
     }
 }
