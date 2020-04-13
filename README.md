@@ -11,3 +11,7 @@
 - spring-cloud-hystrix
     
     SpringCloud降级与熔断(hystrix)
+    
+- springcloud-config-bus
+
+    SpringCloud配置中心与Bus总线
