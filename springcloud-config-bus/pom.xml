@@ -11,6 +11,8 @@
         <module>config-server</module>
         <module>config-client</module>
         <module>config-server-eureka</module>
+        <module>config-bus-server</module>
+        <module>config-bus-client</module>
     </modules>
     <packaging>pom</packaging>
 
