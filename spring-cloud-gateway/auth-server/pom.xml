@@ -21,26 +21,28 @@
             </plugin>
         </plugins>
     </build>
-    <artifactId>gateway-server</artifactId>
-    <name>gateway-server</name>
+    <artifactId>auth-server</artifactId>
+    <name>auth-server</name>
 
     <dependencies>
+        <!--redis用来存放生成的token和refresh token的,本地token要启动-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <!--jwt-->
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>3.7.0</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-gateway</artifactId>
-        </dependency>
-        <!--redis limiter flow-->
-        <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis-reactive</artifactId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
         <dependency>
             <groupId>com.scdzyc</groupId>
@@ -48,4 +50,5 @@
             <version>${project.version}</version>
         </dependency>
     </dependencies>
+
 </project>
