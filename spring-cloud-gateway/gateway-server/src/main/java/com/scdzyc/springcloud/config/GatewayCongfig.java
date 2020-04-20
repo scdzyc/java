@@ -1,6 +1,7 @@
 package com.scdzyc.springcloud.config;
 
 import com.scdzyc.springcloud.filter.TimerFilter;
+import com.scdzyc.springcloud.tools.AuthResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.route.RouteLocator;

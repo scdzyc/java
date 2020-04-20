@@ -17,6 +17,7 @@ public class HelloController implements IHelloService {
     @Value("${spring.application.name}")
     private String name;
 
+    @Override
     public ServerInfo sayHello() {
         ServerInfo serverInfo = new ServerInfo();
         serverInfo.setName(name);
@@ -24,6 +25,7 @@ public class HelloController implements IHelloService {
         return serverInfo;
     }
 
+    @Override
     public ServerInfo sayHello(ServerInfo serverInfo) {
         log.info(serverInfo.toString());
         serverInfo.setPort(port);
@@ -31,10 +33,12 @@ public class HelloController implements IHelloService {
         return serverInfo;
     }
 
+    @Override
     public String error() {
         throw new RuntimeException("is bad way");
     }
 
+    @Override
     public String retry(@RequestParam(name = "timeout")int timeout) {
         try{
             while (timeout-- > 0){
@@ -45,5 +49,11 @@ public class HelloController implements IHelloService {
         }
         log.info("retry is :" + port);
         return port;
+    }
+
+    @Override
+    public String valid() {
+        int i = 1 / 0;
+        return "volid test success";
     }
 }

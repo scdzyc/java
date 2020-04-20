@@ -21,4 +21,7 @@ public interface IHelloService {
 
     @GetMapping("/retry")
     String retry(@RequestParam(name = "timeout") int timeout);
+
+    @GetMapping("/valid")
+    String valid();
 }

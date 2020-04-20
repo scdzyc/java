@@ -3,6 +3,7 @@ package com.scdzyc.springcloud.filter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
@@ -16,7 +17,7 @@ import java.lang.annotation.Annotation;
  */
 @Component
 @Slf4j
-public class TimerFilter implements GatewayFilter, Order {
+public class TimerFilter implements GatewayFilter, Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -34,12 +35,7 @@ public class TimerFilter implements GatewayFilter, Order {
     }
 
     @Override
-    public int value() {
+    public int getOrder() {
         return 0;
-    }
-
-    @Override
-    public Class<? extends Annotation> annotationType() {
-        return null;
     }
 }
