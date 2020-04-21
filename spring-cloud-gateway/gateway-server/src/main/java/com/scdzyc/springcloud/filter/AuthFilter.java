@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
@@ -34,13 +35,18 @@ import javax.annotation.Resource;
  */
 @Component
 @Slf4j
-public class AuthFilter implements /*GatewayFilter,*/ GlobalFilter, Ordered {
+public class AuthFilter implements GatewayFilter, /*GlobalFilter,*/ Ordered {
 
     private static final String AUTH = "Authorization";
     private static final String USERNAME = "icodingedu-username";
 
-    @Resource
-    private AuthService gatewayAuthService;
+    /**
+     * 这里使用feign存在问题 我的想法是将验证融入网关，或者是使用eureka的方式
+     */
+//    @Resource
+//    private AuthService gatewayAuthService;
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -65,7 +71,8 @@ public class AuthFilter implements /*GatewayFilter,*/ GlobalFilter, Ordered {
                 .token(token)
                 .userName(userName)
                 .build();
-        AuthResponse verify = gatewayAuthService.verify(account);
+        AuthResponse verify = restTemplate.postForObject("http://localhost:8999/auth/verify", account, AuthResponse.class);
+        //AuthResponse verify = gatewayAuthService.verify(account);
         if(!AuthResponseCode.SUCCESS.equals(verify.getCode())) {
             log.error("invalid token");
             response.setStatusCode(HttpStatus.FORBIDDEN);
