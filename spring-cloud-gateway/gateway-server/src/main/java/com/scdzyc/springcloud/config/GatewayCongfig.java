@@ -1,5 +1,6 @@
 package com.scdzyc.springcloud.config;
 
+import com.scdzyc.springcloud.filter.AuthFilter;
 import com.scdzyc.springcloud.filter.TimerFilter;
 import com.scdzyc.springcloud.tools.AuthResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class GatewayCongfig {
 
     @Autowired
     private TimerFilter timerFilter;
+
+    @Autowired
+    private AuthFilter authFilter;
 
     @Bean
     @Order
@@ -51,6 +55,10 @@ public class GatewayCongfig {
                             ZonedDateTime.of(start_ldt, ZoneId.of("Asia/Shanghai")),
                             ZonedDateTime.of(end_ldt, ZoneId.of("Asia/Shanghai")))
                     .filters(f -> f.stripPrefix(1))
+                    .uri("lb://feign-client")
+            )
+            .route(r -> r.path("/jwt/**")
+                    .filters( f -> f.stripPrefix(1).filter(authFilter))
                     .uri("lb://feign-client")
             )
             .build();

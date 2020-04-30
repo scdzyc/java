@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.scdzyc.springcloud.entity.Account;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -22,13 +23,13 @@ public class JWTAuthService {
     //定义传入的参数名
     private static final String USERNAME = "username";
 
-    private Algorithm algorithm = Algorithm.HMAC256(KEY);
-
     public String getToken(Account account) {
         Date now = new Date();
+        Algorithm algorithm = Algorithm.HMAC256(KEY);
         String token = JWT.create()
                 .withIssuer(ISSUER)
-                .withExpiresAt(now)
+                .withIssuedAt(now)
+                .withExpiresAt(new Date(now.getTime() + TOKEN_EXP_TIME))
                 .withClaim(USERNAME, account.getUserName())
                 //.withClaim(ROLE,"roleName") 还可以传入其他内容
                 .sign(algorithm);
@@ -37,6 +38,7 @@ public class JWTAuthService {
     }
 
     public Boolean verify(Account account) {
+        Algorithm algorithm = Algorithm.HMAC256(KEY);
         log.info("verify jwt - userName={}", account.getUserName());
         try{
             JWTVerifier verify = JWT.require(algorithm)
